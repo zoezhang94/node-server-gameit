@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import UserRoutes from './users/routes.js';
-// import LikesRoutes from './likes/routes.js';
+import LikesRoutes from './likes/routes.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
 
@@ -30,7 +30,7 @@ app.use(express.json());
 
 
 UserRoutes(app);
-// LikesRoutes(app);
+LikesRoutes(app);
 
 
 app.listen(4000);
