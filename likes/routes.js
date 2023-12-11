@@ -9,8 +9,8 @@ function LikesRoutes(app){
 
     const createUserLikesMovie = async (req, res) => {
         const userId = req.params.userId;
-        const movieId = req.params.movieId;
-        const likes = await dao.createUserLikesMovie(userId, movieId); 
+        const gameId = req.params.gameId;
+        const likes = await dao.createUserLikesMovie(userId, gameId); 
         res.json(likes);
     };
 
@@ -19,8 +19,8 @@ function LikesRoutes(app){
     };
 
     const findUsersThatLikeMovie = async (req, res) => {
-        const movieId = req.params.movieId;
-        const likes = await dao.findUsersThatLikeMovie(movieId);
+        const gameId = req.params.gameId;
+        const likes = await dao.findUsersThatLikeMovie(gameId);
         res.json(likes);
     };
 
