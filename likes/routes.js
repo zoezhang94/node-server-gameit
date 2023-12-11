@@ -12,8 +12,20 @@ function LikesRoutes(app){
     
 
     const deleteUserLikesMovie = async (req, res) => {
-
+        const { userId, gameId } = req.params;
+        console.log("Received in backend for deletion: ", userId, gameId);
+        try {
+            const result = await dao.deleteUserLikesMovie(userId, gameId);
+            if (result.deletedCount === 0) {
+                return res.status(404).send('No like found to delete.');
+            }
+            res.send('Like deleted successfully.');
+        } catch (error) {
+            console.error("Error deleting like", error);
+            res.status(500).send('Internal Server Error');
+        }
     };
+    
 
     const findUsersThatLikeMovie = async (req, res) => {
         const gameId = req.params.gameId;
@@ -28,7 +40,7 @@ function LikesRoutes(app){
     };
 
     app.post('/api/users/:userId/likes/:gameId', createUserLikesMovie);
-    app.delete('/api/users/:userId/games/:gameId/likes', deleteUserLikesMovie);
+    app.delete('/api/users/:userId/likes/:gameId', deleteUserLikesMovie);
     app.get('/api/likes/:gameId/users', findUsersThatLikeMovie);
     app.get('/api/users/:userId/likes', findMoviesLikedByUser);
 
