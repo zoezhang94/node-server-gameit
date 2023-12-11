@@ -1,29 +1,40 @@
 import * as dao from './dao.js';
 
-function LikesRoutes(app) {
-    const findAllLikes = async(req,res) =>{
+function LikesRoutes(app){
+    const findAllLikes = async (req, res) => {
         const likes = await dao.findAllLikes();
         res.json(likes);
+
     };
-    const createUserLikesGame = async(req,res) =>{
+
+    const createUserLikesMovie = async (req, res) => {
         const userId = req.params.userId;
-        const gameId = req.params.gameId;
-        const likes = await dao.createUserLikesGame(userId,gameId);
+        const movieId = req.params.movieId;
+        const likes = await dao.createUserLikesMovie(userId, movieId); 
         res.json(likes);
     };
-    const deleteUserLikesGame = async(req,res) =>{};
-    const findUsersThatLikeGame = async(req,res) =>{
-        const gameId = req.params.gameId;
-        const likes = await dao.findUsersThatLikeGame(gameId);
+
+    const deleteUserLikesMovie = async (req, res) => {
+
+    };
+
+    const findUsersThatLikeMovie = async (req, res) => {
+        const movieId = req.params.movieId;
+        const likes = await dao.findUsersThatLikeMovie(movieId);
         res.json(likes);
     };
-    const findGamesLikedByUser = async(req,res) =>{};
+
+    const findMoviesLikedByUser = async (req, res) => {
+        const userId = req.params.userId;
+        const likes = await dao.findMoviesLikedByUser(userId);
+        res.json(likes);
+    };
 
     app.get('/api/likes', findAllLikes);
-    app.post('/api/users/:userId/likes/:gameId', createUserLikesGame);
-    app.delete('/api/users/:userId/likes/:GameId', deleteUserLikesGame);
-    app.get('/api/likes/:GameId/users', findUsersThatLikeGame);
-    app.get('/api/users/:userId/games', findGamesLikedByUser);
+    app.post('/api/users/:userId/likes/:movieId', createUserLikesMovie);
+    app.delete('/api/users/:userId/movies/:movieId/likes', deleteUserLikesMovie);
+    app.get('/api/likes/:movieId/users', findUsersThatLikeMovie);
+    app.get('/api/users/:userId/likes', findMoviesLikedByUser);
 
 }
 
