@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const creatorSchema = new Schema({
+const testerSchema = new Schema({
     userAccount: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -12,5 +12,5 @@ const creatorSchema = new Schema({
 }, { timestamps: true });
 
 
-export default creatorSchema;
+export default testerSchema;
 

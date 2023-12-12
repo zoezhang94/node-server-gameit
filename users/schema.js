@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
     email:String,
     role:{
         type:String, 
-        enum:['ADMIN','USER','CREATOR']},
+        enum:['ADMIN','USER','TESTER']},
     dob:Date,
     firstName:String,
     lastName:String,

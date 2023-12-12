@@ -1,5 +1,5 @@
 import * as dao from './dao.js';
-import Creator from "../creators/model.js";
+import Tester from "../testers/model.js";
 
 // let currentUser = null;
 
@@ -92,11 +92,11 @@ function UserRoutes(app) {
             const newUser = await dao.createUser({ username, password, role });
             req.session["currentUser"] = newUser;
 
-            if (role === 'CREATOR') {
-                const newCreator = new Creator({
+            if (role === 'TESTER') {
+                const newTester = new Tester({
                     userAccount: newUser._id
                 });
-                await newCreator.save();
+                await newTester.save();
             }
 
             res.json(newUser);
@@ -116,16 +116,16 @@ function UserRoutes(app) {
         res.json(currentUser);
     };
 
-    const findAllCreators = async (req, res) => {
+    const findAllTesters = async (req, res) => {
         try {
-            const creators = await dao.findUserByRole('CREATOR');
-            res.json(creators);
+            const testers = await dao.findUserByRole('TESTER');
+            res.json(testers);
         } catch (error) {
-            res.status(500).json({ message: "Error fetching creators", error });
+            res.status(500).json({ message: "Error fetching testers", error });
         }
     };
 
-    app.get('/api/users/creators', findAllCreators);
+    app.get('/api/users/testers', findAllTesters);
     app.post('/api/users/signin', signIn);
     app.post('/api/users/account', account);
     app.post('/api/users/signup', signup);
