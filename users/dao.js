@@ -1,5 +1,4 @@
 import model from "./model.js";    
-
 export const updateUser = (id, user) => 
     model.updateOne({_id:id},{$set:user});
 

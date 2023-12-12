@@ -1,4 +1,5 @@
 import * as dao from './dao.js';
+import Creator from "../creators/model.js";
 
 // let currentUser = null;
 
@@ -78,17 +79,45 @@ function UserRoutes(app) {
         res.sendStatus(200);
     };
 
+    // const signup = async (req, res) => {
+    //     const user = await dao.findUserByUsername(
+    //       req.body.username);
+    //     if (user) {
+    //       res.status(400).json(
+    //         { message: "Username already taken" });
+    //     }
+    //     const currentUser = await dao.createUser(req.body);
+    //     req.session["currentUser"] = currentUser;
+    //     res.json(currentUser);
+    //   };    
+
     const signup = async (req, res) => {
-        const user = await dao.findUserByUsername(
-          req.body.username);
-        if (user) {
-          res.status(400).json(
-            { message: "Username already taken" });
+        try {
+            const { username, password, role, creatorInfo } = req.body;
+    
+            const existingUser = await dao.findUserByUsername(username);
+            if (existingUser) {
+                return res.status(400).json({ message: "Username already taken" });
+            }
+    
+            const newUser = await dao.createUser({ username, password, role });
+            req.session["currentUser"] = newUser;
+    
+            if (role === 'CREATOR' && creatorInfo) {
+                const newCreator = new Creator({
+                    ...creatorInfo,
+                    userAccount: newUser._id
+                });
+                await newCreator.save();
+            }
+    
+            res.json(newUser);
+        } catch (error) {
+            console.error('Signup error:', error);
+            res.status(500).json({ message: "Error during signup", error });
         }
-        const currentUser = await dao.createUser(req.body);
-        req.session["currentUser"] = currentUser;
-        res.json(currentUser);
-      };    
+    };
+    
 
     const account = async (req,res) => {
         const currentUser = req.session["currentUser"];
@@ -99,6 +128,16 @@ function UserRoutes(app) {
         res.json(currentUser);
     };
 
+    const findAllCreators = async (req, res) => {
+        try {
+            const creators = await dao.findUserByRole('CREATOR');
+            res.json(creators);
+        } catch (error) {
+            res.status(500).json({ message: "Error fetching creators", error });
+        }
+    };
+
+    app.get('/api/users/creators', findAllCreators);
     app.post('/api/users/signin',signIn);
     app.post('/api/users/account',account);
     app.post('/api/users/signup',signup);
