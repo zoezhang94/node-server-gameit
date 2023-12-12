@@ -4,13 +4,13 @@ function LikesRoutes(app){
 
     const createUserLikesMovie = async (req, res) => {
         const userId = req.params.userId;
-        const gameId = req.params.gameId;
-        console.log("Received in backend: ", userId, gameId);
-        const likes = await dao.createUserLikesMovie(userId, gameId); 
-        res.json(likes);
+        const gameData = req.body;
+        console.log("Received data in route handler: ", gameData); 
+    
+        const like = await dao.createUserLikesMovie(userId, gameData);
+        res.json(like);
     };
     
-
     const deleteUserLikesMovie = async (req, res) => {
         const { userId, gameId } = req.params;
         console.log("Received in backend for deletion: ", userId, gameId);
@@ -39,7 +39,7 @@ function LikesRoutes(app){
         res.json(likes);
     };
 
-    app.post('/api/users/:userId/likes/:gameId', createUserLikesMovie);
+    app.post('/api/users/:userId/likes', createUserLikesMovie);
     app.delete('/api/users/:userId/likes/:gameId', deleteUserLikesMovie);
     app.get('/api/likes/:gameId/users', findUsersThatLikeMovie);
     app.get('/api/users/:userId/likes', findMoviesLikedByUser);
