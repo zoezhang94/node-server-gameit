@@ -21,13 +21,13 @@ function TesterRoutes(app) {
             };
 
             const savedReview = await testerDao.addReview(userId, reviewData);
-            res.status(201).json(savedReview); 
+            res.status(201).json(savedReview);
         } catch (error) {
             console.error('Error adding review:', error);
             res.status(500).json({ message: "Error adding review", error });
         }
     });
-    
+
     app.get('/api/testers/reviews/:gameId', async (req, res) => {
         try {
             const gameId = req.params.gameId;
@@ -39,6 +39,17 @@ function TesterRoutes(app) {
         }
     });
 
+
+    app.get('/api/testers/reviews/user/:userId', async (req, res) => {
+        try {
+            const userId = req.params.userId;
+            const reviews = await testerDao.findReviewsByUserId(userId);
+            res.json(reviews);
+        } catch (error) {
+            console.error('Error fetching reviews by user:', error);
+            res.status(500).json({ message: "Error fetching reviews by user", error });
+        }
+    });
 
 
 }

@@ -38,3 +38,12 @@ export const findReviewsByGameId = async (gameId) => {
   );
   return reviews;
 };
+
+
+export const findReviewsByUserId = async (userId) => {
+  const tester = await Tester.findOne({ userAccount: userId });
+  if (!tester) {
+      return []; 
+  }
+  return tester.reviews; 
+};
