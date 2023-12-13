@@ -5,6 +5,7 @@ import cors from 'cors';
 import UserRoutes from './users/routes.js';
 import LikesRoutes from './likes/routes.js';
 import CreatorRoutes from './creators/routes.js';
+import FollowRoutes from './follows/routes.js';
 import mongoose from 'mongoose';
 import "dotenv/config";
 
@@ -30,4 +31,5 @@ app.use(express.json());
 UserRoutes(app);
 LikesRoutes(app);
 CreatorRoutes(app);
+FollowRoutes(app);
 app.listen(4000);
