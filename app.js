@@ -9,7 +9,11 @@ import TesterRoutes from './testers/routes.js';
 import mongoose from 'mongoose';
 import "dotenv/config";
 
-mongoose.connect("mongodb://127.0.0.1:27017/game-it");
+
+console.log(process.env.FRONTEND_URL);
+
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || ("mongodb://127.0.0.1:27017/game-it");
+mongoose.connect(CONNECTION_STRING);
 
 const app = express();
 app.use(cors(
@@ -24,13 +28,18 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
 };
+if (process.env.NODE_ENV !== "development") {
+  sessionOptions.proxy = true;
+  sessionOptions.cookie = {
+    sameSite: "none",
+    secure: true,
+  };
+}
 app.use(session(sessionOptions));
-
 
 app.use(express.json());
 UserRoutes(app);
 LikesRoutes(app);
-
 FollowRoutes(app);
 TesterRoutes(app);
-app.listen(4000);
+app.listen(process.env.PORT || 4000);
