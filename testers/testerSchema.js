@@ -7,7 +7,12 @@ const testerSchema = new Schema({
         ref: 'User'
     },
     reviews: [{
+        gameId: String, 
+        gameName: String,
         text: String,
+        username: String, 
+        userId: Schema.Types.ObjectId, 
+        reviewDate: { type: Date, default: Date.now } 
     }]
 }, { timestamps: true });
 
